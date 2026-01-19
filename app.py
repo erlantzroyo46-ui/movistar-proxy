@@ -5,14 +5,14 @@ app = Flask(__name__)
 
 @app.route("/playlist.m3u8")
 def playlist():
-    # Cabecera con guía de programación (EPG)
+    # Cabecera profesional con EPG
     m3u = '#EXTM3U x-tvg-url="https://raw.githubusercontent.com/davidmuma/EPG_Movistar/master/guide.xml"\n'
     
-    # Hemos cambiado el User-Agent al de un iPhone, que suele saltarse mejor los bloqueos en móviles
-    ua = "|User-Agent=Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+    # User-Agent universal de VLC (el que mejor funciona para evitar el 0%)
+    ua = "|User-Agent=VLC/3.0.11 LibVLC/3.0.11"
     
     canales = [
-        # --- FÚTBOL (LALIGA, CHAMPIONS, EUROPA LEAGUE, SEGUNDA) ---
+        # --- FÚTBOL (LALIGA, CHAMPIONS, SEGUNDA) ---
         {"n": "M. LALIGA TV", "id": "LALIGA", "g": "Fútbol"},
         {"n": "M. LALIGA TV 2", "id": "LALIGA2", "g": "Fútbol"},
         {"n": "M. LALIGA TV 3", "id": "LALIGA3", "g": "Fútbol"},
@@ -23,8 +23,7 @@ def playlist():
         {"n": "M. Liga de Campeones 3", "id": "CHAMPIONS3", "g": "Champions"},
         {"n": "M. Liga de Campeones 4", "id": "CHAMPIONS4", "g": "Champions"},
         {"n": "M. Liga de Campeones 5", "id": "CHAMPIONS5", "g": "Champions"},
-        {"n": "LaLiga Hypermotion (2ª)", "id": "HYPERMOTION", "g": "Fútbol"},
-        {"n": "LaLiga Hypermotion 2", "id": "HYPERMOTION2", "g": "Fútbol"},
+        {"n": "LaLiga Hypermotion", "id": "HYPERMOTION", "g": "Fútbol"},
         {"n": "Copa del Rey", "id": "COPA", "g": "Fútbol"},
         
         # --- MOTOR Y DEPORTES ---
@@ -44,30 +43,25 @@ def playlist():
         {"n": "La Sexta", "id": "LASEXTA", "g": "TDT"},
         {"n": "FDF", "id": "FDF", "g": "TDT"},
         {"n": "Energy", "id": "ENERGY", "g": "TDT"},
-        {"n": "Divinity", "id": "DIVINITY", "g": "TDT"},
         {"n": "Mega", "id": "MEGA", "g": "TDT"},
         {"n": "BeMad", "id": "BEMAD", "g": "TDT"},
-        {"n": "Nova", "id": "NOVA", "g": "TDT"},
         {"n": "Neox", "id": "NEOX", "g": "TDT"},
-        {"n": "Trece", "id": "TRECE", "g": "TDT"},
-        {"n": "GOL PLAY", "id": "GOL", "g": "TDT"},
+        {"n": "Nova", "id": "NOVA", "g": "TDT"},
 
         # --- CINE Y SERIES ---
         {"n": "M. Estrenos", "id": "ESTRENOS", "g": "Cine"},
         {"n": "M. Acción", "id": "ACCION", "g": "Cine"},
         {"n": "Warner TV", "id": "WARNERTV", "g": "Series"},
         {"n": "FOX", "id": "FOX", "g": "Series"},
-        {"n": "AXN", "id": "AXN", "g": "Series"},
 
         # --- ADULTOS ---
         {"n": "Playboy TV", "id": "PLAYBOY", "g": "Adultos"},
-        {"n": "Vivid Red", "id": "VIVIDRED", "g": "Adultos"},
-        {"n": "Hustler TV", "id": "HUSTLER", "g": "Adultos"}
+        {"n": "Vivid Red", "id": "VIVIDRED", "g": "Adultos"}
     ]
     
     for c in canales:
         m3u += f'#EXTINF:-1 tvg-id="{c["id"]}" group-title="{c["g"]}", {c["n"]}\n'
-        # El User-Agent tipo iPhone suele evitar el bloqueo al 0%
+        # Formato directo que no pasa por Render para la reproducción
         m3u += f'https://ver.movistarplus.es/apple/live/{c["id"]}/{c["id"]}.m3u8{ua}\n'
     
     return Response(m3u, mimetype='application/x-mpegurl')

@@ -5,14 +5,13 @@ app = Flask(__name__)
 
 @app.route("/playlist.m3u8")
 def playlist():
-    # Cabecera profesional con EPG
     m3u = '#EXTM3U x-tvg-url="https://raw.githubusercontent.com/davidmuma/EPG_Movistar/master/guide.xml"\n'
     
-    # User-Agent universal de VLC (el que mejor funciona para evitar el 0%)
-    ua = "|User-Agent=VLC/3.0.11 LibVLC/3.0.11"
+    # Inyectamos el Referer para que Movistar crea que vienes de su web oficial
+    ua = "|User-Agent=AppleTV6,2/18L203|Referer=https://ver.movistarplus.es/"
     
     canales = [
-        # --- FÚTBOL (LALIGA, CHAMPIONS, SEGUNDA) ---
+        # --- FÚTBOL TOTAL (LALIGA, CHAMPIONS, MULTIS) ---
         {"n": "M. LALIGA TV", "id": "LALIGA", "g": "Fútbol"},
         {"n": "M. LALIGA TV 2", "id": "LALIGA2", "g": "Fútbol"},
         {"n": "M. LALIGA TV 3", "id": "LALIGA3", "g": "Fútbol"},
@@ -30,7 +29,7 @@ def playlist():
         {"n": "DAZN F1", "id": "DAZNF1", "g": "Motor"},
         {"n": "DAZN 1", "id": "DAZN1", "g": "Deportes"},
         {"n": "DAZN 2", "id": "DAZN2", "g": "Deportes"},
-        {"n": "M. Deportes", "id": "DEPORTES", "g": "Deportes"},
+        {"n": "M. Deportes", "id": "Deportes"},
         {"n": "Eurosport 1", "id": "EUROSPORT1", "g": "Deportes"},
         {"n": "Eurosport 2", "id": "EUROSPORT2", "g": "Deportes"},
 
@@ -44,24 +43,20 @@ def playlist():
         {"n": "FDF", "id": "FDF", "g": "TDT"},
         {"n": "Energy", "id": "ENERGY", "g": "TDT"},
         {"n": "Mega", "id": "MEGA", "g": "TDT"},
-        {"n": "BeMad", "id": "BEMAD", "g": "TDT"},
         {"n": "Neox", "id": "NEOX", "g": "TDT"},
         {"n": "Nova", "id": "NOVA", "g": "TDT"},
 
-        # --- CINE Y SERIES ---
+        # --- CINE, SERIES Y ADULTOS ---
         {"n": "M. Estrenos", "id": "ESTRENOS", "g": "Cine"},
         {"n": "M. Acción", "id": "ACCION", "g": "Cine"},
         {"n": "Warner TV", "id": "WARNERTV", "g": "Series"},
         {"n": "FOX", "id": "FOX", "g": "Series"},
-
-        # --- ADULTOS ---
         {"n": "Playboy TV", "id": "PLAYBOY", "g": "Adultos"},
         {"n": "Vivid Red", "id": "VIVIDRED", "g": "Adultos"}
     ]
     
     for c in canales:
         m3u += f'#EXTINF:-1 tvg-id="{c["id"]}" group-title="{c["g"]}", {c["n"]}\n'
-        # Formato directo que no pasa por Render para la reproducción
         m3u += f'https://ver.movistarplus.es/apple/live/{c["id"]}/{c["id"]}.m3u8{ua}\n'
     
     return Response(m3u, mimetype='application/x-mpegurl')

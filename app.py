@@ -5,14 +5,12 @@ app = Flask(__name__)
 
 @app.route("/playlist.m3u8")
 def playlist():
-    # Cabecera con guía de canales (EPG)
     m3u = '#EXTM3U x-tvg-url="https://raw.githubusercontent.com/davidmuma/EPG_Movistar/master/guide.xml"\n'
-    
-    # El User-Agent que desbloquea el 0% de buffer
+    # El User-Agent que desbloquea la señal en dispositivos móviles
     ua = "|User-Agent=AppleTV6,2/18L203"
     
     canales = [
-        # --- FÚTBOL (LALIGA, CHAMPIONS, EUROPA LEAGUE, 2ª) ---
+        # --- FÚTBOL TOTAL (LALIGA, CHAMPIONS, MULTIS) ---
         {"n": "M. LALIGA TV", "id": "LALIGA", "g": "Fútbol"},
         {"n": "M. LALIGA TV 2", "id": "LALIGA2", "g": "Fútbol"},
         {"n": "M. LALIGA TV 3", "id": "LALIGA3", "g": "Fútbol"},
@@ -24,6 +22,7 @@ def playlist():
         {"n": "M. Liga de Campeones 4", "id": "CHAMPIONS4", "g": "Champions"},
         {"n": "M. Liga de Campeones 5", "id": "CHAMPIONS5", "g": "Champions"},
         {"n": "M. Liga de Campeones 6", "id": "CHAMPIONS6", "g": "Champions"},
+        {"n": "M. Liga de Campeones 7", "id": "CHAMPIONS7", "g": "Champions"},
         {"n": "LaLiga Hypermotion", "id": "HYPERMOTION", "g": "Fútbol"},
         {"n": "LaLiga Hypermotion 2", "id": "HYPERMOTION2", "g": "Fútbol"},
         {"n": "Copa del Rey", "id": "COPA", "g": "Fútbol"},
@@ -55,10 +54,7 @@ def playlist():
         {"n": "Atreseries", "id": "ATRESERIES", "g": "TDT"},
         {"n": "Trece", "id": "TRECE", "g": "TDT"},
         {"n": "DMAX", "id": "DMAX", "g": "TDT"},
-        {"n": "DKISS", "id": "DKISS", "g": "TDT"},
         {"n": "GOL PLAY", "id": "GOL", "g": "TDT"},
-        {"n": "Canal Sur", "id": "CSUR", "g": "Autonómicas"},
-        {"n": "TV3", "id": "TV3", "g": "Autonómicas"},
 
         # --- CINE Y SERIES ---
         {"n": "M. Estrenos", "id": "ESTRENOS", "g": "Cine"},
@@ -72,6 +68,7 @@ def playlist():
         {"n": "AXN", "id": "AXN", "g": "Series"},
         {"n": "Calle 13", "id": "CALLE13", "g": "Series"},
         {"n": "SyFy", "id": "SYFY", "g": "Series"},
+        {"n": "Cosmo", "id": "COSMO", "g": "Series"},
 
         # --- ADULTOS ---
         {"n": "Playboy TV", "id": "PLAYBOY", "g": "Adultos"},

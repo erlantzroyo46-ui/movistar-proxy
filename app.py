@@ -5,65 +5,54 @@ app = Flask(__name__)
 
 @app.route("/playlist.m3u8")
 def playlist():
-    # Cabecera con guía de canales para que se vea la programación
+    # Cabecera con EPG para ver la programación en la tele
     m3u = '#EXTM3U x-tvg-url="https://raw.githubusercontent.com/davidmuma/EPG_Movistar/master/guide.xml"\n'
     
-    # El User-Agent que abre la señal sin errores de extractor
+    # El "secreto" de la lista perfecta: User-Agent pegado al enlace
     ua = "|User-Agent=AppleTV6,2/18L203"
     
-    # LISTA MASIVA COMPLETA (200 CANALES APROX)
+    # LISTA MASIVA COMPLETA (PAQUETE PREMIUM)
     canales = [
-        # --- FÚTBOL (LALIGA, CHAMPIONS Y MÁS) ---
-        {"n": "M. LALIGA TV", "id": "LALIGA", "g": "Fútbol"},
-        {"n": "DAZN LALIGA", "id": "DAZNLALIGA", "g": "Fútbol"},
-        {"n": "M. Liga de Campeones", "id": "CHAMPIONS", "g": "Fútbol"},
-        {"n": "M. Liga de Campeones 2", "id": "CHAMPIONS2", "g": "Fútbol"},
-        {"n": "M. Liga de Campeones 3", "id": "CHAMPIONS3", "g": "Fútbol"},
-        {"n": "LaLiga Hypermotion", "id": "HYPERMOTION", "g": "Fútbol"},
-        {"n": "Copa del Rey", "id": "COPA", "g": "Fútbol"},
-        
         # --- MOTOR Y DEPORTES ---
         {"n": "DAZN F1", "id": "DAZNF1", "g": "Motor"},
         {"n": "DAZN 1", "id": "DAZN1", "g": "Deportes"},
         {"n": "DAZN 2", "id": "DAZN2", "g": "Deportes"},
-        {"n": "Eurosport 1", "id": "EUROSPORT1", "g": "Deportes"},
-        {"n": "Eurosport 2", "id": "EUROSPORT2", "g": "Deportes"},
         {"n": "M. Deportes", "id": "DEPORTES", "g": "Deportes"},
-        {"n": "M. Golf", "id": "GOLF", "g": "Deportes"},
-
+        {"n": "Eurosport 1", "id": "EUROSPORT1", "g": "Deportes"},
+        
+        # --- FÚTBOL (LALIGA Y SEGUNDA) ---
+        {"n": "M. LALIGA TV", "id": "LALIGA", "g": "Fútbol"},
+        {"n": "DAZN LALIGA", "id": "DAZNLALIGA", "g": "Fútbol"},
+        {"n": "LaLiga Hypermotion", "id": "HYPERMOTION", "g": "Fútbol"},
+        
+        # --- CHAMPIONS Y EUROPA LEAGUE ---
+        {"n": "M. Liga de Campeones", "id": "CHAMPIONS", "g": "Champions"},
+        {"n": "M. Liga de Campeones 2", "id": "CHAMPIONS2", "g": "Champions"},
+        
         # --- TDT ESPAÑA COMPLETO ---
         {"n": "La 1", "id": "TVE", "g": "TDT"},
-        {"n": "La 2", "id": "TVE2", "g": "TDT"},
         {"n": "Antena 3", "id": "ANTENA3", "g": "TDT"},
         {"n": "Cuatro", "id": "CUATRO", "g": "TDT"},
         {"n": "Telecinco", "id": "TELECINCO", "g": "TDT"},
         {"n": "La Sexta", "id": "LASEXTA", "g": "TDT"},
         {"n": "FDF", "id": "FDF", "g": "TDT"},
-        {"n": "Energy", "id": "ENERGY", "g": "TDT"},
         {"n": "Mega", "id": "MEGA", "g": "TDT"},
-        {"n": "Divinity", "id": "DIVINITY", "g": "TDT"},
-        {"n": "BeMad", "id": "BEMAD", "g": "TDT"},
-        {"n": "Neox", "id": "NEOX", "g": "TDT"},
-        {"n": "Nova", "id": "NOVA", "g": "TDT"},
-        {"n": "Trece", "id": "TRECE", "g": "TDT"},
-
+        {"n": "Energy", "id": "ENERGY", "g": "TDT"},
+        
         # --- CINE Y SERIES ---
         {"n": "M. Estrenos", "id": "ESTRENOS", "g": "Cine"},
         {"n": "M. Acción", "id": "ACCION", "g": "Cine"},
-        {"n": "M. Comedia", "id": "COMEDIA", "g": "Cine"},
         {"n": "Warner TV", "id": "WARNERTV", "g": "Series"},
         {"n": "FOX", "id": "FOX", "g": "Series"},
-        {"n": "AXN", "id": "AXN", "g": "Series"},
-
+        
         # --- ADULTOS ---
         {"n": "Playboy TV", "id": "PLAYBOY", "g": "Adultos"},
-        {"n": "Vivid Red", "id": "VIVIDRED", "g": "Adultos"},
-        {"n": "Hustler TV", "id": "HUSTLER", "g": "Adultos"}
+        {"n": "Vivid Red", "id": "VIVIDRED", "g": "Adultos"}
     ]
     
     for c in canales:
         m3u += f'#EXTINF:-1 tvg-id="{c["id"]}" group-title="{c["g"]}", {c["n"]}\n'
-        # Formato directo tipo Dropbox para evitar errores
+        # Esto envía a la tele directamente al servidor de origen con la identidad correcta
         m3u += f'https://ver.movistarplus.es/apple/live/{c["id"]}/{c["id"]}.m3u8{ua}\n'
     
     return Response(m3u, mimetype='application/x-mpegurl')

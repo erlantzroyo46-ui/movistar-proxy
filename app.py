@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route("/playlist.m3u8")
 def playlist():
     m3u = '#EXTM3U x-tvg-url="https://raw.githubusercontent.com/davidmuma/EPG_Movistar/master/guide.xml"\n'
-    ua = "|User-Agent=AppleTV6,2/18L203"
+    ua = http-user-agent=AppleTV6,2/18L203
     
     # LISTA MASIVA - PAQUETE COMPLETO
     canales = [

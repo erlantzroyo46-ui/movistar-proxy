@@ -5,20 +5,26 @@ app = Flask(__name__)
 
 @app.route("/playlist.m3u8")
 def playlist():
-    # Detecta tu dirección de Render automáticamente
     base_url = "https://movistar-proxy.onrender.com"
-    
     canales = [
-        # --- FÚTBOL Y DEPORTES ---
+        # --- FÚTBOL TOTAL ---
         {"n": "M. LALIGA TV", "g": "Fútbol", "id": "LALIGA"},
         {"n": "DAZN LALIGA", "g": "Fútbol", "id": "DAZNLALIGA"},
         {"n": "M. Liga de Campeones", "g": "Fútbol", "id": "CHAMPIONS"},
         {"n": "LaLiga Hypermotion", "g": "Fútbol", "id": "HYPERMOTION"},
         {"n": "Copa del Rey", "g": "Fútbol", "id": "COPA"},
-        {"n": "DAZN F1", "g": "Motor", "id": "DAZNF1"},
-        {"n": "Eurosport 1", "g": "Deportes", "id": "EUROSPORT1"},
+        {"n": "M. LALIGA TV 2", "g": "Fútbol", "id": "LALIGA2"},
+        {"n": "M. Liga de Campeones 2", "g": "Fútbol", "id": "CHAMPIONS2"},
         
-        # --- TDT ESPAÑA ---
+        # --- DEPORTES Y MOTOR ---
+        {"n": "DAZN F1", "g": "Motor", "id": "DAZNF1"},
+        {"n": "DAZN 1", "g": "Deportes", "id": "DAZN1"},
+        {"n": "DAZN 2", "g": "Deportes", "id": "DAZN2"},
+        {"n": "Eurosport 1", "g": "Deportes", "id": "EUROSPORT1"},
+        {"n": "Eurosport 2", "g": "Deportes", "id": "EUROSPORT2"},
+        {"n": "Golf TV", "g": "Deportes", "id": "GOLF"},
+
+        # --- TDT ESPAÑA COMPLETO ---
         {"n": "La 1", "g": "TDT", "id": "TVE"},
         {"n": "La 2", "g": "TDT", "id": "TVE2"},
         {"n": "Antena 3", "g": "TDT", "id": "ANTENA3"},
@@ -31,31 +37,25 @@ def playlist():
         {"n": "Mega", "g": "TDT", "id": "MEGA"},
         {"n": "Neox", "g": "TDT", "id": "NEOX"},
         {"n": "Nova", "g": "TDT", "id": "NOVA"},
-        {"n": "Treve", "g": "TDT", "id": "TRECE"},
-        
+        {"n": "Trece", "g": "TDT", "id": "TRECE"},
+        {"n": "DMAX", "g": "TDT", "id": "DMAX"},
+        {"n": "Paramount", "g": "TDT", "id": "PARAMOUNT"},
+        {"n": "GOL PLAY", "g": "TDT", "id": "GOL"},
+        {"n": "Disney Channel", "g": "Infantil", "id": "DISNEY"},
+        {"n": "Boing", "g": "Infantil", "id": "BOING"},
+        {"n": "Clan", "g": "Infantil", "id": "CLAN"},
+
         # --- CINE Y SERIES ---
         {"n": "M. Estrenos", "g": "Cine", "id": "ESTRENOS"},
+        {"n": "M. Estrenos 2", "g": "Cine", "id": "ESTRENOS2"},
         {"n": "M. Acción", "g": "Cine", "id": "ACCION"},
         {"n": "M. Comedia", "g": "Cine", "id": "COMEDIA"},
+        {"n": "M. Drama", "g": "Cine", "id": "DRAMA"},
         {"n": "Warner TV", "g": "Series", "id": "WARNERTV"},
-        {"n": "Fox", "g": "Series", "id": "FOX"},
-        
+        {"n": "FOX", "g": "Series", "id": "FOX"},
+        {"n": "AXN", "g": "Series", "id": "AXN"},
+        {"n": "Calle 13", "g": "Series", "id": "CALLE13"},
+        {"n": "SyFy", "g": "Series", "id": "SYFY"},
+
         # --- ADULTOS ---
-        {"n": "Playboy TV", "g": "Adultos", "id": "PLAYBOY"},
-        {"n": "Vivid Red", "g": "Adultos", "id": "VIVIDRED"}
-    ]
-    
-    m3u = "#EXTM3U\n"
-    for c in canales:
-        m3u += f'#EXTINF:-1 group-title="{c["g"]}", {c["n"]}\n'
-        m3u += f'{base_url}/v/{c["id"]}.m3u8\n'
-    
-    # Esta línea arregla el error "None of the available extractors"
-    return Response(m3u, mimetype='application/x-mpegurl')
-
-@app.route("/v/<chid>.m3u8")
-def stream(chid):
-    return redirect(f"https://ver.movistarplus.es/apple/live/{chid}/{chid}.m3u8")
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
+        {"n": "Playboy TV", "g": "Adultos",
